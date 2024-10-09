@@ -17,13 +17,21 @@ DD_LOGS.init({
   sessionSampleRate: 100,
 });
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+const owner = urlParams.get('owner') || 'dopple';
+const workspace = urlParams.get('workspace') || 'bill-company-ws';
+const projectName = urlParams.get('projectName') || 'arrow-boat-fixed-2';
+const productVersion = urlParams.get('productVersion') || 2;
+
 const dopple = new DoppleXR({
   container,
   selection: {},
-  productVersion: 2,
-  owner: 'dopple',
-  workspace: 'bill-company-ws',
-  projectName: 'arrow-boat-fixed-2',
+  productVersion,
+  owner,
+  workspace,
+  projectName,
   logNamespace: 'sdk',
   sessionId,
 });

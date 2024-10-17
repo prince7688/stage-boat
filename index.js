@@ -7,15 +7,18 @@ const sessionId = window.crypto.randomUUID();
 if (!localStorage.getItem('ROARR_LOG')) {
   localStorage.setItem('ROARR_LOG', 'true');
 }
-
-DD_LOGS.init({
-  clientToken: 'pub282819eaab8c4828d216ccb15fae6ad8',
-  site: 'datadoghq.com',
-  service: 'prototype',
-  env: 'stage',
-  forwardErrorsToLogs: true,
-  sessionSampleRate: 100,
-});
+try {
+  DD_LOGS.init({
+    clientToken: 'pub282819eaab8c4828d216ccb15fae6ad8',
+    site: 'datadoghq.com',
+    service: 'prototype',
+    env: 'stage',
+    forwardErrorsToLogs: true,
+    sessionSampleRate: 100,
+  });
+} catch (e) {
+  console.log(e);
+}
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -37,7 +40,11 @@ const dopple = new DoppleXR({
 });
 
 const fileLogWriter = (log) => {
-  DD_LOGS.logger.info(log);
+  try {
+    DD_LOGS.logger.info(log);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 dopple.addLogWriter(fileLogWriter);

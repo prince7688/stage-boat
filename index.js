@@ -66,6 +66,11 @@ dopple.resize({ trackParentSize: true });
 
 dopple.run();
 
+const loadingContent = document.getElementById('loadingContent');
+const mainContent = document.getElementById('mainContent');
+loadingContent.style.display = 'none';
+mainContent.style.display = 'flex';
+
 {
   function getChoices() {
     return Object.keys(dopple.matrix.choices);
@@ -119,4 +124,30 @@ dopple.run();
   }
 
   populateChoices();
+
+  document.getElementById('view-in-ar').onclick = async (e) => {
+    e.preventDefault();
+
+    document.getElementById('arModal').style.display = 'flex';
+    const qrUrl = await dopple.startAR();
+    document.getElementById('qr-image').setAttribute('src', qrUrl);
+  };
+
+  document.getElementById('take-snapshot').onclick = () => dopple?.takeSnapshot();
+  function closeModal() {
+    const modal = document.getElementById('arModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+
+  window.onclick = (event) => {
+    const modal = document.getElementById('arModal');
+
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  };
 }

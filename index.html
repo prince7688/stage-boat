@@ -6,16 +6,48 @@
     <title>Document</title>
 
     <style>
+      /* Basic reset and layout */
       html,
       body {
         width: 100%;
         height: 100%;
         margin: 0;
         padding: 0;
-        display: flex;
-        flex-direction: row;
+        font-family: 'Roboto', sans-serif;
       }
 
+      #loadingContent {
+        width: 100%;
+        height: 100%;
+        background-color: #3c3939;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+      }
+
+      #loadingSpinner {
+        animation: rotate 2s linear infinite;
+        margin: 8px;
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      #mainContent {
+        display: none;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Main container styles */
       #containerEle {
         width: 75%;
         height: 100%;
@@ -23,13 +55,28 @@
         position: relative;
       }
 
+      /* Sidebar form styles */
       #choicesForm {
         width: 25%;
         height: 100%;
+        overflow: auto;
         background-color: black;
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 10px;
+        padding: 0px;
       }
 
+      .open-modal-btn,
+      #take-snapshot {
+        padding: 10px 20px;
+        margin-left: 10px;
+        margin-bottom: 7px;
+        cursor: pointer;
+      }
+
+      /* List styles */
       #choicesList {
         display: flex;
         flex-direction: column;
@@ -37,17 +84,90 @@
         padding: 10px;
         list-style-type: none;
       }
+
       #list-group-item {
         color: white;
         font-family: 'Times New Roman', Times, serif;
       }
+
+      .modal {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        pointer-events: auto;
+      }
+
+      .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+        position: relative;
+      }
+
+      .close-modal-btn {
+        font-size: 36px;
+        cursor: pointer;
+        position: absolute;
+        top: 0px;
+        right: 10px;
+        color: black;
+      }
+
+      .modal-header {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: left;
+      }
+
+      .modal-text {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      /* QR image styling */
+      #qr-image {
+        width: 100%;
+        height: 100%;
+        background-color: black;
+      }
     </style>
   </head>
+
   <body>
-    <div id="containerEle"></div>
-    <form id="choicesForm">
-      <ul id="choicesList"></ul>
-    </form>
+    <div id="loadingContent"><span id="loadingSpinner">⚽</span>Loading...</div>
+    <div id="mainContent">
+      <!-- Main content area -->
+      <div id="containerEle"></div>
+
+      <!-- Sidebar form with buttons -->
+      <form id="choicesForm">
+        <ul id="choicesList"></ul>
+        <button type="button" class="open-modal-btn" id="view-in-ar">View in AR</button>
+        <button type="button" id="take-snapshot">Take Snapshot</button>
+      </form>
+
+      <div id="arModal" class="modal">
+        <div class="modal-content">
+          <span id="close-modal-btn" class="close-modal-btn">×</span>
+          <h2 class="modal-header">View in Augmented Reality</h2>
+          <p class="modal-text">Scan this QR code to view in AR on your device:</p>
+          <img id="qr-image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="QR Code" />
+        </div>
+      </div>
+    </div>
+
+    <!-- External scripts -->
     <script src="https://www.datadoghq-browser-agent.com/us1/v5/datadog-logs.js"></script>
     <script type="module" src="index.js"></script>
   </body>

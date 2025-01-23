@@ -131,8 +131,11 @@ mainContent.style.display = 'flex';
   document.getElementById('view-in-ar').onclick = async (e) => {
     e.preventDefault();
 
-    document.getElementById('arModal').style.display = 'flex';
     const qrUrl = await dopple.startAR();
+    if(!qrUrl) {
+      return;
+    }
+    document.getElementById('arModal').style.display = 'flex';
     document.getElementById('qr-image').setAttribute('src', qrUrl);
   };
 

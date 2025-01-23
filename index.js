@@ -27,6 +27,7 @@ const owner = urlParams.get('owner') || 'dopple';
 const workspace = urlParams.get('workspace') || 'bill-company-ws';
 const projectName = urlParams.get('projectName') || 'arrow-boat-fixed-2';
 const productVersion = urlParams.get('productVersion') || 2;
+const selection = urlParams.get('selection');
 
 const dopple = new DoppleXR({
   container,
@@ -60,7 +61,9 @@ const selected = Object.entries(dopple.matrix.choices).reduce(
   {},
 );
 
-await dopple.updateSelection(selected);
+if(!selection) {
+  await dopple.updateSelection(selected);
+}
 
 dopple.resize({ trackParentSize: true });
 
